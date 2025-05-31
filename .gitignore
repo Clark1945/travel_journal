@@ -1,0 +1,50 @@
+# === Java ===
+*.class
+*.jar
+*.war
+*.ear
+*.log
+*.tmp
+
+# === Maven ===
+/target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# === Gradle (若你使用的是 Gradle 請取消註解) ===
+# /build/
+# .gradle/
+
+# === IntelliJ IDEA ===
+.idea/
+*.iml
+*.iws
+out/
+
+# === Eclipse ===
+.project
+.classpath
+.settings/
+bin/
+
+# === macOS ===
+.DS_Store
+
+# === Windows ===
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# === Logs ===
+logs/
+*.log
+
+# === Spring Boot ===
+spring.log
+
+# === Others ===
+.env
+*.swp
+*.bak
+
+# === VS Code (若你使用 VS Code 開發) ===
+.vscode/

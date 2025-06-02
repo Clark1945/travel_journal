@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+</head>
+<body>
+<h2>登入</h2>
+<a href="/oauth2/authorization/google">使用 Google 登入</a>
+</body>
+
+<ul>
+    <li th:each="authority : ${#authentication.authorities}">
+        權限: <span th:text="${authority}"></span>
+    </li>
+</ul>
+</html>

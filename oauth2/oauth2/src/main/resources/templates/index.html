@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+</head>
+<body>
+<h1>歡迎，[[${name}]]</h1>
+<p>Email: [[${email}]]</p>
+<img th:src="${picture}" alt="profile" width="100"/>
+<br/>
+<a href="/custom-logout">登出（包含 Google）</a>
+
+<ul>
+    <li th:each="authority : ${#authentication.authorities}">
+        權限: <span th:text="${authority}"></span>
+    </li>
+</ul>
+
+</body>
+</html>

@@ -1,0 +1,27 @@
+server:
+  port: 5000
+spring:
+  application:
+    name: oauth2
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ""
+            client-secret: ""
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope:
+#              - openid
+              - profile
+              - email
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://openidconnect.googleapis.com/v1/userinfo
+  data:
+    redis:
+      host: localhost
+      port: 6399 # 👈 對應 docker redis port
+      timeout: 6000

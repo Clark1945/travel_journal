@@ -2,10 +2,13 @@ package org.example.oauth2.config;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -27,40 +30,43 @@ public class JwtProvider {
 
 
     /**
-     * 產生 JWT Token
+     * generate JWT access token
      */
-    public String generateToken(String email, List<String> roles) {
+    public String generateAccessToken(String email, List<String> roles) {
         Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + EXPIRATION_TIME);
 
+        // Access Token valid for 15 minutes
+        long accessTokenValidity = 15 * 60 * 1000;
         return JWT.create()
                 .withSubject(email)
                 .withClaim("roles", roles)
                 .withIssuedAt(now)
-                .withExpiresAt(expiryDate)
+                .withExpiresAt(new Date(now.getTime() + accessTokenValidity))
                 .sign(algorithm);
     }
 
     /**
-     * 驗證 Token 並取得解碼後的資料
+     * generate JWT refresh token
      */
-    public DecodedJWT validateToken(String token) {
-        JWTVerifier verifier = JWT.require(algorithm)
-                .build();
+    public String generateRefreshToken(String email, List<String> roles) {
+        Date now = new Date();
+
+        // Refresh Token valid for 7 days
+        long refreshTokenValidity = 7 * 24 * 60 * 60 * 1000;
+        return JWT.create()
+                .withSubject(email)
+                .withClaim("roles", roles)
+                .withIssuedAt(now)
+                .withExpiresAt(new Date(now.getTime() + refreshTokenValidity))
+                .sign(algorithm);
+    }
+
+    /**
+     * validate token retrieve the decoded data.
+     */
+    public DecodedJWT validateToken(String token) throws JWTVerificationException {
+        JWTVerifier verifier = JWT.require(algorithm).build();
         return verifier.verify(token);
     }
 
-    /**
-     * 從 Token 擷取 email（subject）
-     */
-    public String getEmailFromToken(String token) {
-        return validateToken(token).getSubject();
-    }
-
-    /**
-     * 擷取角色
-     */
-    public List<String> getRolesFromToken(String token) {
-        return validateToken(token).getClaim("roles").asList(String.class);
-    }
 }

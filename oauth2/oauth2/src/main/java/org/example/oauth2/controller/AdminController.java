@@ -9,6 +9,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 
 @Controller
 @RequestMapping("/admin")
+@Deprecated
 public class AdminController {
 
     @GetMapping

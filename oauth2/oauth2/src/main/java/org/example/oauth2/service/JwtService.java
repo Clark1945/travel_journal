@@ -2,6 +2,8 @@ package org.example.oauth2.service;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.Cookie;
 import org.example.oauth2.config.JwtProvider;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -41,10 +43,10 @@ public class JwtService {
             throw new RuntimeException("Refresh token 已失效或不合法");
         }
 
-        // 取出 roles claim
+        // get roles claim
         List<String> roles = decodedJWT.getClaim("roles").asList(String.class);
 
-        // 重新簽發 access token
+        // re sign access token
         return jwtProvider.generateAccessToken(email, roles);
     }
 
@@ -73,7 +75,7 @@ public class JwtService {
      * @param authentication
      * @return access token
      */
-    public Map<String, Object> generateGoogleLoginJwtToken(Authentication authentication) {
+    public Map<String, Object> generateGoogleLoginJwtToken(Authentication authentication) throws JsonProcessingException {
         String email;
         String name;
         List<String> roles;
@@ -91,10 +93,11 @@ public class JwtService {
         String refreshToken = jwtProvider.generateRefreshToken(email, roles);
 
         // generate Refresh Token JWT
+        ObjectMapper objectMapper = new ObjectMapper();
         Map<String, Object> userInfo = new HashMap<>();
         userInfo.put("email", email);
         userInfo.put("name", name);
-        userInfo.put("roles", roles);
+        userInfo.put("roles", objectMapper.writeValueAsString(roles));
         userInfo.put("refreshToken", refreshToken);
 
         String key = JwtService.generateGoogleLoginInfoKey(email);
@@ -102,9 +105,10 @@ public class JwtService {
         redisTemplate.expire(key, Duration.ofDays(7)); // Set TTL for 7 days
 
 
+
         String accessToken = jwtProvider.generateAccessToken(email, roles);
         // save access token is not recommend.
-        userInfo.put("token", accessToken);
+        userInfo.put("accessToken", accessToken);
         return userInfo;
     }
 }

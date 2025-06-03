@@ -7,9 +7,6 @@ import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequest
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Component
 public class CustomAuthorizationRequestResolver implements OAuth2AuthorizationRequestResolver {
 
@@ -17,7 +14,7 @@ public class CustomAuthorizationRequestResolver implements OAuth2AuthorizationRe
 
     public CustomAuthorizationRequestResolver(ClientRegistrationRepository clientRegistrationRepository) {
         this.defaultResolver = new DefaultOAuth2AuthorizationRequestResolver(
-                clientRegistrationRepository, "/oauth2/authorization");
+                clientRegistrationRepository, "api/v1/oauth2/authorization");
     }
 
     @Override

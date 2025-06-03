@@ -44,6 +44,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         //FIXME
         System.out.println("accessToken: " + userInfo.get("accessToken"));
+        System.out.println("refreshToken: " + userInfo.get("refreshToken"));
 
         // Add refresh_token to HttpOnly Cookie
         Cookie refreshCookie = new Cookie("refresh_token", String.valueOf(userInfo.get("refreshToken")));

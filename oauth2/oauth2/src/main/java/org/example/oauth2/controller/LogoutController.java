@@ -31,41 +31,13 @@ import java.net.http.HttpResponse;
 import java.util.Map;
 
 @RestController
+@Deprecated
 public class LogoutController {
 
     private final OAuth2AuthorizedClientService clientService;
-    private final RedisTemplate<String, Object> redisTemplate;
-    private final JwtService jwtService;
 
-    public LogoutController(OAuth2AuthorizedClientService clientService, RedisTemplate<String, Object> redisTemplate, JwtService jwtService) {
+    public LogoutController(OAuth2AuthorizedClientService clientService) {
         this.clientService = clientService;
-        this.redisTemplate = redisTemplate;
-        this.jwtService = jwtService;
-    }
-
-    @PostMapping("/custom-logout")
-    public ResponseEntity<?> logout(@RequestHeader("Authorization") String authHeader) {
-        try {
-            // 1. 擷取 JWT Token
-            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid Authorization header");
-            }
-
-            String accessToken = authHeader.substring(7);
-            String userEmail = jwtService.getEmailFromToken(accessToken);
-
-            // 2. 撤銷 Google Token（可選）
-            // 若你有記錄使用者 Google 的 accessToken，可在這裡呼叫 revoke API
-
-            // 3. 從 Redis 清除登入狀態（可選，視你有無快取）
-            redisTemplate.delete("jwt:" + userEmail);
-
-            return ResponseEntity.ok(Map.of("status", "success"));
-        } catch (JWTVerificationException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unexpected error");
-        }
     }
 
     /**

@@ -32,7 +32,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login").permitAll()
+                        .requestMatchers("/auth/refresh","/auth/revoke").permitAll()
                         .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                         .requestMatchers("/user/**").hasAuthority("ROLE_USER")
                         .anyRequest().authenticated()
@@ -40,7 +40,6 @@ public class SecurityConfig {
                 .oauth2Login(oauth -> oauth
                         .authorizationEndpoint(auth ->
                                 auth.authorizationRequestResolver(customAuthorizationRequestResolver))
-//                        .loginPage("/login")
                         .userInfoEndpoint(userInfo ->
                                 userInfo.userService(customOAuth2UserService)) // 使用自訂UserService
                         .successHandler(oAuth2LoginSuccessHandler) // 成功跳轉處理

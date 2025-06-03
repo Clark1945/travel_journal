@@ -4,7 +4,6 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.http.Cookie;
 import org.example.oauth2.config.JwtProvider;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
@@ -72,7 +71,6 @@ public class JwtService {
 
     /**
      * Save Jwt Token in redis. Set TTL for 7 days
-     * @param authentication
      * @return access token
      */
     public Map<String, Object> generateGoogleLoginJwtToken(Authentication authentication) throws JsonProcessingException {

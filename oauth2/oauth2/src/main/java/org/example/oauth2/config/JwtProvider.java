@@ -18,7 +18,6 @@ public class JwtProvider {
     @Value("${jwt.secret.key}")
     private String secretKey;
 
-    private static final long EXPIRATION_TIME = 60 * 60 * 1000; // 1 小時
     private Algorithm algorithm;
 
     @PostConstruct

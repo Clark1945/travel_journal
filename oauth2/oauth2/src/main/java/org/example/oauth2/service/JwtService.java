@@ -30,6 +30,7 @@ public class JwtService {
         this.redisTemplate = redisTemplate;
     }
 
+    @Deprecated
     public String refreshAccessToken(String refreshToken) {
         DecodedJWT decodedJWT = jwtProvider.validateToken(refreshToken);
         String email = decodedJWT.getSubject();
@@ -55,16 +56,19 @@ public class JwtService {
     }
 
     // Get email from JWT token（subject）
+    @Deprecated
     public String getEmailFromToken(String token) throws JWTVerificationException {
         return jwtProvider.validateToken(token).getSubject();
     }
 
     // get roles from JWT Token (claim)
+    @Deprecated
     public List<String> getRolesFromToken(String token) throws JWTVerificationException {
         return jwtProvider.validateToken(token).getClaim("roles").asList(String.class);
     }
 
     // Parse Token (validate & retrieve data)
+    @Deprecated
     public DecodedJWT parseToken(String token) throws JWTVerificationException {
         return jwtProvider.validateToken(token);
     }

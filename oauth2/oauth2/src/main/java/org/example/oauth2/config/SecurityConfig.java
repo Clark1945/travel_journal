@@ -3,11 +3,14 @@ package org.example.oauth2.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+
+import java.nio.charset.StandardCharsets;
 
 @Configuration
 public class SecurityConfig {
@@ -44,21 +47,21 @@ public class SecurityConfig {
                                 userInfo.userService(customOAuth2UserService)) // 使用自訂UserService
                         .successHandler(oAuth2LoginSuccessHandler) // 成功跳轉處理
                 )
-                .logout(logout -> logout
+                .logout(logout -> logout // Not this function is not used, only for reference.
                         .logoutSuccessHandler((request, response, authentication) -> {
-                            response.setContentType("application/json");
-                            response.setCharacterEncoding("UTF-8");
+                            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                            response.setCharacterEncoding(StandardCharsets.UTF_8.name());
                             response.getWriter().write("{\"message\": \"Logout successful\"}");
                         })
                         .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID") // 清掉 session cookie
+                        .deleteCookies("JSESSIONID") // Clear session cookie
                 );
 
         return http.build();
     }
 
     /**
-     * 錯誤處理設定
+     * If exception happened, redirect to /error page. (Deprecated in API auth server)
      */
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {

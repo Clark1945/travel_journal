@@ -18,6 +18,15 @@ public class JwtProvider {
     @Value("${jwt.secret.key}")
     private String secretKey;
 
+    // Refresh Token valid for 7 days
+    @Value("${jwt.secret.refreshToken.validity}")
+    private long refreshTokenValidity;
+
+    // Access Token valid for 15 minutes
+    @Value("${jwt.secret.accessToken.validity}")
+    private long accessTokenValidity;
+
+
     private Algorithm algorithm;
 
     @PostConstruct
@@ -32,8 +41,6 @@ public class JwtProvider {
     public String generateAccessToken(String email, List<String> roles) {
         Date now = new Date();
 
-        // Access Token valid for 15 minutes
-        long accessTokenValidity = 15 * 60 * 1000;
         return JWT.create()
                 .withSubject(email)
                 .withClaim("roles", roles)
@@ -48,8 +55,6 @@ public class JwtProvider {
     public String generateRefreshToken(String email, List<String> roles) {
         Date now = new Date();
 
-        // Refresh Token valid for 7 days
-        long refreshTokenValidity = 7 * 24 * 60 * 60 * 1000;
         return JWT.create()
                 .withSubject(email)
                 .withClaim("roles", roles)

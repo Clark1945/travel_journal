@@ -3,13 +3,16 @@ package org.example.oauth2.config;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jdk.jfr.ContentType;
 import org.example.oauth2.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Map;
 
@@ -42,7 +45,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         // Add refresh_token to HttpOnly Cookie
         Cookie refreshCookie = new Cookie("refresh_token", String.valueOf(userInfo.get("refreshToken")));
         refreshCookie.setHttpOnly(true);
-        refreshCookie.setSecure(true); // 若啟用 HTTPS
+//        refreshCookie.setSecure(true); // 若啟用 HTTPS
         refreshCookie.setPath("/");
         refreshCookie.setMaxAge((int) Duration.ofDays(7).getSeconds());
 
@@ -54,8 +57,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
             response.sendRedirect(returnTo + "?token=" + userInfo.get("accessToken"));
         } else {
             // 回應 JSON
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            response.setCharacterEncoding(StandardCharsets.UTF_8.name());
             response.getWriter().write("""
                 {
                   "accessToken": "%s"

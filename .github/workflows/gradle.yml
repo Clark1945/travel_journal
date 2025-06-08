@@ -46,6 +46,9 @@ jobs:
       run: ./gradlew build
       working-directory: note_service
 
+    - name: Copy JAR to root dir
+      run: cp note_service/build/libs/*.jar ./app.jar
+
     - name: Build and push docker image
       uses: mr-smithers-excellent/docker-build-push@v4
       with:

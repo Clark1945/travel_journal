@@ -49,6 +49,9 @@ jobs:
     - name: Copy JAR to root dir
       run: cp note_service/build/libs/*.jar ./app.jar
 
+    - name: Check built JAR files
+      run: ls -al note_service/build/libs
+
     - name: Build and push docker image
       uses: mr-smithers-excellent/docker-build-push@v4
       with:

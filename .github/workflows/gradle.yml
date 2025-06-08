@@ -47,7 +47,7 @@ jobs:
       working-directory: note_service
 
     - name: Build and push docker image
-      use: mr-smithers-excellent/docker-build-push@v4
+      uses: mr-smithers-excellent/docker-build-push@v4
       with:
         image: adrianvonziegler/clark-testing-hub
         registry: docker.io

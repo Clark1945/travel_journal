@@ -8,13 +8,18 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 @Controller
-@RequestMapping("/admin")
 @Deprecated
 public class AdminController {
 
-    @GetMapping
+    @GetMapping("/admin")
     public String adminPage(Model model, @AuthenticationPrincipal OAuth2User principal) {
         model.addAttribute("email", principal.getAttribute("email"));
         return "admin";
+    }
+
+    @GetMapping("/user")
+    public String userPage(Model model, @AuthenticationPrincipal OAuth2User principal) {
+        model.addAttribute("email", principal.getAttribute("email"));
+        return "/index";
     }
 }

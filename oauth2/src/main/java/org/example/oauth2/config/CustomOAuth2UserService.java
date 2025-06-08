@@ -24,7 +24,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         // 根據 email 判斷角色
         Set<GrantedAuthority> authorities = new HashSet<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_USER")); // Default authority
-        if ("clarkliu@fontrip.com".equals(email)) {
+        if ("dmc950213@gmail.com".equals(email)) {
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN")); // Admin authority
         }
 

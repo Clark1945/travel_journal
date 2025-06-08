@@ -9,10 +9,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Map;
 
-@RequestMapping(value = "api/v1/auth")
+@RequestMapping(value = "api/v1/oauth2")
 @RestController
 public class HomeController {
 
@@ -79,5 +83,23 @@ public class HomeController {
         } catch (JWTVerificationException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", true, "message", "Invalid refresh token"));
         }
+    }
+
+    /**
+     * API Server. Revoke is unnecessary for now. We won't send access token to the client.
+     *
+     */
+    @Deprecated
+    private void revokeAccessToken(String oauthToken) {
+
+            // 呼叫 Google 的 token revoke API
+            HttpClient httpClient = HttpClient.newHttpClient();
+            HttpRequest revokeRequest = HttpRequest.newBuilder()
+                    .uri(URI.create("https://oauth2.googleapis.com/revoke?token=" + oauthToken))
+                    .POST(HttpRequest.BodyPublishers.noBody())
+                    .header("Content-Type", "application/x-www-form-urlencoded")
+                    .build();
+
+            httpClient.sendAsync(revokeRequest, HttpResponse.BodyHandlers.discarding());
     }
 }

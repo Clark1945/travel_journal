@@ -7,6 +7,7 @@
 
 name: Java CI with Gradle
 
+# Only works with push to master branch
 on:
   push:
     branches: [ "master" ]
@@ -15,6 +16,7 @@ on:
 
 jobs:
   build:
+    # build with ubuntu env
     runs-on: ubuntu-latest
 
     permissions:
@@ -53,6 +55,7 @@ jobs:
           fi
           cp "$JAR_PATH" app.jar
 
+      # upload to your private repo. username and password is used in Github Secret
       - name: Build and push docker image
         uses: mr-smithers-excellent/docker-build-push@v4
         with:

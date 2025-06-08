@@ -47,7 +47,8 @@ jobs:
       working-directory: note_service
 
     - name: Copy JAR to root dir
-      run: cp note_service/build/libs/*.jar ./app.jar
+      run: cp build/libs/*.jar ../app.jar
+      working-directory: note_service
 
     - name: Check built JAR files
       run: ls -al note_service/build/libs

@@ -46,6 +46,9 @@ jobs:
       run: ./gradlew build
       working-directory: note_service
 
+    - name: List built files
+      run: ls -l note_service/build/libs
+
     - name: Move jar to root directory
       run: mv note_service/build/libs/*.jar app.jar
 

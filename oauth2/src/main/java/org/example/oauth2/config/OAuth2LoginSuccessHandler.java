@@ -3,7 +3,6 @@ package org.example.oauth2.config;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jdk.jfr.ContentType;
 import org.example.oauth2.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

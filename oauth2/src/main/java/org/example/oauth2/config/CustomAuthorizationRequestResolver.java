@@ -13,8 +13,7 @@ public class CustomAuthorizationRequestResolver implements OAuth2AuthorizationRe
     private final OAuth2AuthorizationRequestResolver defaultResolver;
 
     public CustomAuthorizationRequestResolver(ClientRegistrationRepository clientRegistrationRepository) {
-        this.defaultResolver = new DefaultOAuth2AuthorizationRequestResolver(
-                clientRegistrationRepository, "api/v1/oauth2/authorization");
+        this.defaultResolver = new DefaultOAuth2AuthorizationRequestResolver(clientRegistrationRepository, "/api/v1/oauth2/authorization");
     }
 
     @Override

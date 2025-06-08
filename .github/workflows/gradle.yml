@@ -46,16 +46,25 @@ jobs:
       run: ./gradlew build
       working-directory: note_service
 
-    - name: Copy JAR to root dir
-      run: cp note_service/build/libs/*.jar ./app.jar
+    - name: List built files
+      run: ls -l note_service/build/libs
 
-    - name: Build and push docker image
+    - name: Move jar to root directory
+      run: mv note_service/build/libs/*.jar app.jar
+
+    - name: Set Docker tag
+      if: github.event_name == 'push'
+      run: echo "DOCKER_TAG=${GITHUB_SHA::7}" >> $GITHUB_ENV
+
+    - name: Build and push Docker image
+      if: github.event_name == 'push'
       uses: mr-smithers-excellent/docker-build-push@v4
       with:
         image: adrianvonziegler/clark-testing-hub
         registry: docker.io
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
+        tags: ${{ env.DOCKER_TAG }}
 
     # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
     # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.
